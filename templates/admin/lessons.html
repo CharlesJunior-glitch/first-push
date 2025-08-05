@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Manage Lessons for "{{ course.title }}"</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Add New Lesson</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Lesson Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content</label>
+                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="order" class="form-label">Order</label>
+                        <input type="number" class="form-control" id="order" name="order" min="1" value="{{ lessons|length + 1 }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Lesson</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Existing Lessons</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for lesson in lessons %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ lesson.title }}</h5>
+                            <small>Order: {{ lesson.order }}</small>
+                        </div>
+                        <p class="mb-1">{{ lesson.content[:100] }}{% if lesson.content|length > 100 %}...{% endif %}</p>
+                    </div>
+                    {% else %}
+                    <p class="text-center">No lessons found for this course.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('admin_courses') }}" class="btn btn-outline-primary">Back to Courses</a>
+</div>
+{% endblock %}

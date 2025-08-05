@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">My Dashboard</h1>
+
+<div class="row mb-4">
+    <div class="col-md-4 mb-4 mb-md-0">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">My Profile</h5>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Joined:</strong> {{ user.date_joined.strftime('%B %d, %Y') }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">My Courses</h5>
+                    <a href="{{ url_for('courses') }}" class="btn btn-sm btn-primary">Enroll in New Course</a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if enrollments %}
+                <div class="list-group">
+                    {% for enrollment in enrollments %}
+                    <a href="{{ url_for('course_detail', course_id=enrollment.course.id) }}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ enrollment.course.title }}</h5>
+                            {% if enrollment.completed %}
+                            <span class="badge bg-success">Completed</span>
+                            {% else %}
+                            <span class="badge bg-primary">In Progress</span>
+                            {% endif %}
+                        </div>
+                        <p class="mb-1">{{ enrollment.course.description }}</p>
+                        <small>Enrolled: {{ enrollment.enrollment_date.strftime('%B %d, %Y') }}</small>
+                        
+                        {% if not enrollment.completed %}
+                        <div class="progress mt-2" style="height: 5px;">
+                            {% set completed_lessons = namespace(count=0) %}
+                            {% for lesson in enrollment.course.lessons %}
+                                {% for completion in lesson.completions %}
+                                    {% if completion.user_id == user.id %}
+                                        {% set completed_lessons.count = completed_lessons.count + 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            
+                            {% if enrollment.course.lessons|length > 0 %}
+                                {% set progress = (completed_lessons.count / enrollment.course.lessons|length) * 100 %}
+                            {% else %}
+                                {% set progress = 0 %}
+                            {% endif %}
+                            
+                            <div class="progress-bar" role="progressbar" style="width: {{ progress }}%" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small>{{ completed_lessons.count }} of {{ enrollment.course.lessons|length }} lessons completed</small>
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-center">You're not enrolled in any courses yet. <a href="{{ url_for('courses') }}">Browse courses</a> to get started.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

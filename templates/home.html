@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+
+<div class="container">
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-7 mb-4 mb-lg-0">
+            <h1 class="display-4 fw-bold">Welcome to Skills Learning Platform</h1>
+            <p class="lead">Develop practical skills in finance, commerce, sales, and online trading with our expert-led courses.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <a href="{{ url_for('courses') }}" class="btn btn-primary btn-lg px-4 me-md-2">Browse Courses</a>
+                {% if not session.get('user_id') %}
+                <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg px-4">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <img src="https://source.unsplash.com/random/600x400/?learning" alt="Learning" class="img-fluid rounded shadow">
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">Explore Our Categories</h2>
+            <p class="lead">Find the perfect course to enhance your skills</p>
+        </div>
+        
+        {% for category in categories %}
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ category.name }}</h5>
+                    <p class="card-text">{{ category.description }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="{{ url_for('courses', category=category.id) }}" class="btn btn-outline-primary">View Courses</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="row mb-5 bg-light py-5 rounded">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">Why Choose Our Platform</h2>
+        </div>
+        
+        <div class="col-md-4 mb-4 mb-md-0">
+            <div class="text-center">
+                <div class="mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-clock text-primary" viewBox="0 0 16 16">
+                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                    </svg>
+                </div>
+                <h4>Learn at Your Own Pace</h4>
+                <p>Access course materials anytime, anywhere. Progress through lessons at a pace that works for you.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4 mb-md-0">
+            <div class="text-center">
+                <div class="mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-laptop text-primary" viewBox="0 0 16 16">
+                        <path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5h11zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2h-11zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5z"/>
+                    </svg>
+                </div>
+                <h4>Practical Skills</h4>
+                <p>Our courses focus on real-world applications to help you develop practical skills for your career.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="text-center">
+                <div class="mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-graph-up text-primary" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
+                    </svg>
+                </div>
+                <h4>Track Your Progress</h4>
+                <p>Monitor your learning journey with our progress tracking system and celebrate your achievements.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6 mb-4 mb-lg-0 order-lg-2">
+            <img src="https://source.unsplash.com/random/600x400/?education" alt="Education" class="img-fluid rounded shadow">
+        </div>
+        <div class="col-lg-6 order-lg-1">
+            <h2 class="fw-bold mb-3">Start Your Learning Journey Today</h2>
+            <p class="mb-4">Our platform offers comprehensive courses designed by industry experts to help you master essential skills in today's competitive market.</p>
+            <ul class="list-unstyled mb-4">
+                <li class="mb-2">✓ Expert-led courses</li>
+                <li class="mb-2">✓ Practical, hands-on learning</li>
+                <li class="mb-2">✓ Self-paced curriculum</li>
+                <li class="mb-2">✓ Progress tracking</li>
+            </ul>
+            <a href="{{ url_for('courses') }}" class="btn btn-primary">Get Started Now</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
